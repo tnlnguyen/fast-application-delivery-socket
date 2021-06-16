@@ -11,37 +11,16 @@ app.set('port', (process.env.PORT || 5000));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Chatroom
-io.on('connection', (socket) => {
-  console.log('new connection')
-  // when the client emits 'new message', this listens and executes
-  socket.on('new message', (data) => {
-    console.log('new message received')
-    // we tell the client to execute 'new message'
-    io.emit('new message', {
-      username: data['username'],
-      message: data['message']
-    });
+io.on('connection', function(socket){
+  console.log('User Conncetion');
+
+  socket.on('typing', function(typing){
+    console.log("Typing.... ");
+    io.emit('typing', typing);
   });
 
-  // when the client emits 'typing', we broadcast it to others
-  socket.on('typing', (data) => {
-    io.emit('typing', {
-      username: data['username']
-    });
-  });
-
-  // when the client emits 'stop typing', we broadcast it to others
-  socket.on('stop typing', (data) => {
-    io.emit('stop typing', {
-      username: data['username']
-    });
-  });
-
-  // when the user disconnects.. perform this
-  socket.on('disconnect', (data) => {
-    io.emit('user left', {
-      username: data['username'],
-    });
+  socket.on('new message', function(msg){
+    io.emit('new message', msg);
   });
 });
 
