@@ -10,8 +10,6 @@ app.set('port', (process.env.PORT || 5000));
 // Routing
 app.use(express.static(path.join(__dirname, 'public')));
 
-io = socketIO(server, {transports: ['websocket']});
-
 // Chatroom
 io.on('connection', (socket) => {
   console.log('new connection')
