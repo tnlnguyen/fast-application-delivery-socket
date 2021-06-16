@@ -15,8 +15,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Chatroom
 io.on('connection', (socket) => {
+  console.log('new connection')
   // when the client emits 'new message', this listens and executes
   socket.on('new message', (data) => {
+    console.log('new message received')
     // we tell the client to execute 'new message'
     socket.broadcast.emit('new message', {
       username: data['username'],
